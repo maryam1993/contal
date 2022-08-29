@@ -1,5 +1,6 @@
 package com.contal.challenge.repository.impl;
 
+import com.contal.challenge.constant.AtmConfig;
 import com.contal.challenge.repository.AtmRepository;
 import com.contal.challenge.util.FileUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,19 +15,20 @@ public class AtmRepositoryImpl implements AtmRepository {
     @Value("${atm.file.name}")
     private String fileName;
 
+
     @Override
     public Map<Integer, Integer> getCurrentCashHolding() {
-        return FileUtil.readFromFileInMap(fileName);
+        return FileUtil.readFromFile(fileName);
     }
 
     @Override
     public List<Integer> getDispenseOptions() {
-        return List.of(20, 40, 50, 60, 70, 80, 100, 110, 150, 200);
+        return AtmConfig.DISPENSE_OPTIONS;
     }
 
     @Override
     public List<Integer> getNotes() {
-        return List.of(20, 50);
+        return AtmConfig.NOTES;
     }
 
     @Override

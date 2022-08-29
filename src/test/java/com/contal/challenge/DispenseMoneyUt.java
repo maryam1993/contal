@@ -1,8 +1,10 @@
 package com.contal.challenge;
 
+import com.contal.challenge.exception.AmountNotEnoughException;
+import com.contal.challenge.exception.AmountNotValidException;
+import com.contal.challenge.exception.CashHoldingNotSuitableException;
 import com.contal.challenge.repository.impl.AtmRepositoryImpl;
 import com.contal.challenge.service.impl.AtmServiceImpl;
-import com.contal.challenge.exception.AtmServiceException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,7 +44,7 @@ public class DispenseMoneyUt {
         when(atmRepository.getDispenseOptions()).thenCallRealMethod();
         when(atmRepository.getNotes()).thenCallRealMethod();
 
-        AtmServiceException exception = Assertions.assertThrows(AtmServiceException.class,
+        AmountNotEnoughException exception = Assertions.assertThrows(AmountNotEnoughException.class,
                 () -> atmService.dispenseMoney(150));
 
         assertEquals("Cash holding amount is not enough for dispensing", exception.getMessage(), "exception message failed");
@@ -62,7 +64,7 @@ public class DispenseMoneyUt {
 
     @Test
     void dispenseMoney_invalidAmount_throwException() {
-        AtmServiceException exception = Assertions.assertThrows(AtmServiceException.class,
+        AmountNotValidException exception = Assertions.assertThrows(AmountNotValidException.class,
                 () -> atmService.dispenseMoney(85));
 
         assertEquals("This amount is not valid", exception.getMessage(), "exception message failed");
@@ -89,7 +91,7 @@ public class DispenseMoneyUt {
         when(atmRepository.getNotes()).thenCallRealMethod();
 
 
-        AtmServiceException exception = Assertions.assertThrows(AtmServiceException.class,
+        CashHoldingNotSuitableException exception = Assertions.assertThrows(CashHoldingNotSuitableException.class,
                 () -> atmService.dispenseMoney(200));
 
         assertEquals("Cash holding is not suitable for 200", exception.getMessage(), "exception message failed");

@@ -1,8 +1,11 @@
 package com.contal.challenge.service.impl;
 
 
+import com.contal.challenge.constant.ExceptionMessageConstant;
+import com.contal.challenge.exception.AmountNotEnoughException;
+import com.contal.challenge.exception.AmountNotValidException;
+import com.contal.challenge.exception.CashHoldingNotSuitableException;
 import com.contal.challenge.repository.AtmRepository;
-import com.contal.challenge.exception.AtmServiceException;
 import com.contal.challenge.service.AtmService;
 import com.contal.challenge.util.CombinationUtil;
 import lombok.AllArgsConstructor;
@@ -33,7 +36,7 @@ public class AtmServiceImpl implements AtmService {
     @Override
     public void dispenseMoney(int amount) {
         if (!getAtmDispenseMoneyOptions().contains(amount)) {
-            throw new AtmServiceException("This amount is not valid");
+            throw new AmountNotValidException(ExceptionMessageConstant.AMOUNT_NOT_VALID);
         }
         List<List<Integer>> options = CombinationUtil.combinationSum(getNotes(), amount);
         boolean validity = false;
@@ -46,7 +49,7 @@ public class AtmServiceImpl implements AtmService {
             }
         }
         if (!validity) {
-            throw new AtmServiceException("Cash holding amount is not enough for dispensing");
+            throw new AmountNotEnoughException(ExceptionMessageConstant.AMOUNT_NOT_ENOUGH);
         }
     }
 
@@ -59,7 +62,7 @@ public class AtmServiceImpl implements AtmService {
         Map<Integer, Integer> cashHolding = getCurrentCashHolding();
         // specific condition for 200
         if (amount == 200 && cashHolding.get(20) != 8 && cashHolding.get(50) != 3) {
-            throw new AtmServiceException("Cash holding is not suitable for 200");
+            throw new CashHoldingNotSuitableException(ExceptionMessageConstant.CASH_HOLDING_NOT_SUITABLE);
         }
         boolean isCashHoldingEnough = true;
         for (Integer note : dispense.keySet()) {

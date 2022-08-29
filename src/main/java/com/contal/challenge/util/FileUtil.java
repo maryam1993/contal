@@ -1,44 +1,34 @@
 package com.contal.challenge.util;
 
-import com.contal.challenge.exception.AtmServiceException;
+import com.contal.challenge.exception.FileException;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvException;
 
-import java.io.*;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class FileUtil {
 
-    public static List<String[]> readFromFile(String fileName) {
-        List<String[]> allData;
+    public static Map<Integer, Integer> readFromFile(String fileName) {
         try {
             FileReader filereader = new FileReader(fileName, StandardCharsets.UTF_8);
             CSVParser parser = new CSVParserBuilder().withIgnoreLeadingWhiteSpace(true).build();
             CSVReader csvReader = new CSVReaderBuilder(filereader)
                     .withCSVParser(parser)
                     .build();
-            allData = csvReader.readAll();
-
+            return FileDataHelper.convertToMap(csvReader.readAll());
         } catch (IOException | CsvException e) {
-            throw new AtmServiceException(e.getMessage(), e.getCause());
+            throw new FileException(e.getMessage(), e.getCause());
         }
-        return allData;
     }
 
-    public static Map<Integer, Integer> readFromFileInMap(String fileName) {
-        List<String[]> allData = readFromFile(fileName);
-        Map<Integer, Integer> dataMap = new HashMap<>();
-        for (String[] row : allData) {
-            dataMap.put(Integer.parseInt(row[0]), Integer.parseInt(row[1]));
-        }
-        return dataMap;
-    }
 
     public static void writeToFile(String fileName, Map<Integer, Integer> data) {
         try (Writer writer = new FileWriter(fileName)) {
@@ -50,7 +40,7 @@ public class FileUtil {
             }
             writer.flush();
         } catch (IOException ex) {
-            throw new AtmServiceException(ex.getMessage(), ex.getCause());
+            throw new FileException(ex.getMessage(), ex.getCause());
         }
     }
 }
