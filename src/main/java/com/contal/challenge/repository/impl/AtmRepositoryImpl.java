@@ -23,11 +23,13 @@ public class AtmRepositoryImpl implements AtmRepository {
 
     @Override
     public List<Integer> getDispenseOptions() {
+        // in case of having a database, this would be fetched from a table
         return AtmConfig.DISPENSE_OPTIONS;
     }
 
     @Override
     public List<Integer> getNotes() {
+        // in case of having a database, this would be fetched from a table
         return AtmConfig.NOTES;
     }
 

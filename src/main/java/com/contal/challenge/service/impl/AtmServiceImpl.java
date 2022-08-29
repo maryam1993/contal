@@ -34,7 +34,7 @@ public class AtmServiceImpl implements AtmService {
     }
 
     @Override
-    public void dispenseMoney(int amount) {
+    public void dispenseMoney(Integer amount) {
         if (!getAtmDispenseMoneyOptions().contains(amount)) {
             throw new AmountNotValidException(ExceptionMessageConstant.AMOUNT_NOT_VALID);
         }

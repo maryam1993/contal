@@ -8,7 +8,7 @@ public interface AtmService {
 
     List<Integer> getAtmDispenseMoneyOptions();
 
-    void dispenseMoney(int amount);
+    void dispenseMoney(Integer amount);
 
     Map<Integer, Integer> getCurrentCashHolding();
 

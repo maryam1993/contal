@@ -26,7 +26,7 @@ public class AtmController {
     }
 
     @PutMapping("/dispense/{amount}")
-    public void dispenseMoney(@PathVariable("amount") int amount) {
+    public void dispenseMoney(@PathVariable("amount") Integer amount) {
         atmService.dispenseMoney(amount);
     }
 }
